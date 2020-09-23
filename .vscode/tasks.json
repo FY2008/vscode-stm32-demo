@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Build",
+			"command": "make",
+			"args": [
+				
+			],
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"type": "shell",
+			"label": "Build & Update",
+			"command": "openocd",
+			"args": [
+				"-f",
+				"D:/bin/OpenOCD-20191029-0.10.0/share/openocd/scripts/interface/stlink-v2.cfg",
+				"-f",
+				"D:/bin/OpenOCD-20191029-0.10.0/share/openocd/scripts/target/stm32f4x.cfg",
+				"-c",
+				"program build/vsocde-stm32-demo.elf verify reset exit"
+			],
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"dependsOn": "Build"
+		}
+	]
+}
