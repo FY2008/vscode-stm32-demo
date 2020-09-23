@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +55,27 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#ifdef __GNUC__
+  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+PUTCHAR_PROTOTYPE
+{
+  uint8_t temp[1] = {ch};
+  HAL_UART_Transmit(&huart2, temp, 1, 0xffff);
+  return ch;
+}
 
+int _write(int file, char *ptr, int len)
+{
+  int DataIdx;
+  for (DataIdx=0; DataIdx<len; DataIdx++)
+  {
+    __io_putchar(*ptr++);
+  }
+  return len;
+}
 /* USER CODE END 0 */
 
 /**
@@ -88,7 +108,8 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  printf("Hello World!\n");
+  float i = 3.14f;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,6 +119,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(200);
+    printf("temp: %f\n", i);
   }
   /* USER CODE END 3 */
 }
